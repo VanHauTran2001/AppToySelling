@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.databinding.ActivitySignupBinding;
 import com.example.apptoyselling.model.User;
-import com.example.apptoyselling.sqlite.SQLiteHelper;
+import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.ui.user.activity.signin.SigninActivity;
 
 import java.util.ArrayList;

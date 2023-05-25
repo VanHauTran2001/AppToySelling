@@ -1,4 +1,4 @@
-package com.example.apptoyselling.sqlite;
+package com.example.apptoyselling.data.sqlite;
 
 import android.content.Context;
 import android.database.Cursor;

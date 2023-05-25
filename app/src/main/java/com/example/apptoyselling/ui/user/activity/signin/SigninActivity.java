@@ -7,14 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.databinding.ActivitySigninBinding;
 import com.example.apptoyselling.model.User;
-import com.example.apptoyselling.sqlite.SQLiteHelper;
+import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.ui.user.activity.home.HomeActivity;
 import com.example.apptoyselling.ui.user.activity.signup.SignupActivity;
 
@@ -111,5 +110,14 @@ public class SigninActivity extends AppCompatActivity {
                 "Phone VARCHAR(100),"+
                 "Email VARCHAR(100),"+
                 "Password VARCHAR(100))");
+        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS CART(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "IdSP INTEGER,"+
+                "Image NVARCHAR(100),"+
+                "NameSP NVARCHAR(100),"+
+                "Price FLOAT,"+
+                "Description NVARCHAR(300),"+
+                "Origin NVARCHAR(100),"+
+                "NumberOrder INTEGER,"+
+                "SumPrice FLOAT)");
     }
 }

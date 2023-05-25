@@ -13,7 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_height="40dp">
+            android:layout_height="45dp">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -24,6 +24,7 @@
                 android:drawablePadding="15dp"
                 android:paddingStart="10dp"
                 android:textSize="17sp"
+                android:id="@+id/edtSearch"
                 android:hint="Tìm kiếm......"
                 android:textColor="@color/black"/>
             <ImageView
@@ -34,21 +35,25 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"/>
         </RelativeLayout>
-        <androidx.core.widget.NestedScrollView
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <LinearLayout
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recylerSanPham"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:id="@+id/recylerPhone"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"/>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                android:visibility="invisible"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
     </LinearLayout>
 </layout>
