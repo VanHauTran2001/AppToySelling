@@ -16,6 +16,7 @@ import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.ui.user.activity.home.HomeActivity;
 import com.example.apptoyselling.ui.user.activity.signup.SignupActivity;
+import com.example.apptoyselling.ui.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class SigninActivity extends AppCompatActivity {
     private SQLiteHelper sqLiteHelper;
     private ArrayList<User> userArrayList;
     private boolean checkLogin;
+    int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class SigninActivity extends AppCompatActivity {
                     userArrayList.clear();
                     Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS"); //Lấy ra danh sách tài khoản
                     while (data.moveToNext()) {
-                        int id = data.getInt(0);
+                        id = data.getInt(0);
                         String name = data.getString(1);
                         String phone = data.getString(2);
                         String email = data.getString(3);
@@ -70,6 +72,8 @@ public class SigninActivity extends AppCompatActivity {
                     }
                     if (checkLogin) {
                         onCheckSaveInfo(edtEmail, edtPass);
+                        Utils.emailUser = edtEmail;
+                        Utils.idUser = id;
                         Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SigninActivity.this, HomeActivity.class));
                     } else {

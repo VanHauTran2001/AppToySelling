@@ -30,6 +30,7 @@
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:id="@+id/imgPopupFilter"
                 android:src="@drawable/baseline_filter_alt_24"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

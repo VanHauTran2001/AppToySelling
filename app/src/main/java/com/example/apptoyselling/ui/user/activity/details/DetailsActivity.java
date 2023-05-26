@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.databinding.ActivityDetailsBinding;
+import com.example.apptoyselling.model.Cart;
 import com.example.apptoyselling.model.SanPham;
 import com.example.apptoyselling.ui.user.activity.cart.CartActivity;
 import com.example.apptoyselling.ui.user.activity.cart.CartAdapter;
@@ -48,23 +49,42 @@ public class DetailsActivity extends AppCompatActivity {
         binding.btnBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
                 if (Utils.cartArrayList.size() > 0){
+                    int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
                     boolean exits = false;
-                    for(int i =0 ; i< Utils.cartArrayList.size()-1;i++){
+                    for(int i =0 ; i< Utils.cartArrayList.size();i++){
                         if (Utils.cartArrayList.get(i).getIdCart() == idDetails){
                             Utils.cartArrayList.get(i).setNumberOrder((Utils.cartArrayList.get(i).getNumberOrder() + numberOrder));
                             Utils.cartArrayList.get(i).setPriceCart((priceDetails * Utils.cartArrayList.get(i).getNumberOrder()));
-                            exits = true;
                             sqLiteHelper.QueryData("UPDATE CART SET NumberOrder = '"+Utils.cartArrayList.get(i).getNumberOrder()+"' , SumPrice = '"+ Utils.cartArrayList.get(i).getPriceCart() + "' WHERE IdSP = '"+idDetails+"' ");
+                            exits = true;
                         }
                     }
                     if (!exits){
                         float sumPrice = numberOrder*priceDetails;
+                        Cart cart = new Cart();
+                        cart.setIdCart(idDetails);
+                        cart.setNameCart(nameDetails);
+                        cart.setDesCart(descriptionDetails);
+                        cart.setImgCart(imgDetails);
+                        cart.setOriginCart(originDetails);
+                        cart.setNumberOrder(numberOrder);
+                        cart.setSumPrice(sumPrice);
+                        cart.setPriceCart(priceDetails);
                         sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                     }
                 }else {
+                    int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
                     float sumPrice = numberOrder*priceDetails;
+                    Cart cart = new Cart();
+                    cart.setIdCart(idDetails);
+                    cart.setNameCart(nameDetails);
+                    cart.setDesCart(descriptionDetails);
+                    cart.setImgCart(imgDetails);
+                    cart.setOriginCart(originDetails);
+                    cart.setNumberOrder(numberOrder);
+                    cart.setSumPrice(sumPrice);
+                    cart.setPriceCart(priceDetails);
                     sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                 }
                 startActivity(new Intent(DetailsActivity.this, CartActivity.class));
@@ -76,10 +96,10 @@ public class DetailsActivity extends AppCompatActivity {
         binding.btnAddtoCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
                 if (Utils.cartArrayList.size() > 0){
                     boolean exits = false;
-                    for(int i = 0 ; i< Utils.cartArrayList.size()-1;i++){
+                    int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
+                    for(int i = 0 ; i< Utils.cartArrayList.size();i++){
                         if (Utils.cartArrayList.get(i).getIdCart() == idDetails){
                             Utils.cartArrayList.get(i).setNumberOrder(Utils.cartArrayList.get(i).getNumberOrder() + numberOrder);
                             Utils.cartArrayList.get(i).setPriceCart(priceDetails * Utils.cartArrayList.get(i).getNumberOrder());
@@ -89,10 +109,29 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                     if (!exits){
                         float sumPrice = numberOrder*priceDetails;
+                        Cart cart = new Cart();
+                        cart.setIdCart(idDetails);
+                        cart.setNameCart(nameDetails);
+                        cart.setDesCart(descriptionDetails);
+                        cart.setImgCart(imgDetails);
+                        cart.setOriginCart(originDetails);
+                        cart.setNumberOrder(numberOrder);
+                        cart.setSumPrice(sumPrice);
+                        cart.setPriceCart(priceDetails);
                         sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                     }
                 }else {
+                    int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
                     float sumPrice = numberOrder*priceDetails;
+                    Cart cart = new Cart();
+                    cart.setIdCart(idDetails);
+                    cart.setNameCart(nameDetails);
+                    cart.setDesCart(descriptionDetails);
+                    cart.setImgCart(imgDetails);
+                    cart.setOriginCart(originDetails);
+                    cart.setNumberOrder(numberOrder);
+                    cart.setSumPrice(sumPrice);
+                    cart.setPriceCart(priceDetails);
                     sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                 }
                 Toast.makeText(getApplicationContext(),"Thêm vào giỏ hàng thành công",Toast.LENGTH_SHORT).show();
@@ -141,8 +180,8 @@ public class DetailsActivity extends AppCompatActivity {
             idDetails = intent.getIntExtra("id",0);
             nameDetails = intent.getStringExtra("name");
             imgDetails = intent.getStringExtra("img");
-            priceDetails = intent.getFloatExtra("price",0f);
             descriptionDetails = intent.getStringExtra("des");
+            priceDetails = intent.getFloatExtra("price",0f);
             originDetails = intent.getStringExtra("origin");
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
             Glide.with(this).load(imgDetails).into(binding.imgDetails);

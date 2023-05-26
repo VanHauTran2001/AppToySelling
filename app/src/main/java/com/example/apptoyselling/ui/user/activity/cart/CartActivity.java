@@ -34,9 +34,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
     private ActivityCartBinding binding;
     private SQLiteHelper sqLiteHelper;
     CartAdapter cartAdapter;
-    float feeShip = 0f;
-    float itemTotal = 0f;
-    float total = 0f;
+    public static float feeShip = 0f;
+    public static float total = 0f;
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
     Dialog dialogDelete;
     @Override
@@ -71,14 +70,16 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
     }
     @SuppressLint("SetTextI18n")
     private void customDataTotal() {
-        itemTotal = 0f;
-        for (int i =0; i< Utils.cartArrayList.size()-1; i++){
-            itemTotal += Utils.cartArrayList.get(i).getSumPrice();
+        if (Utils.cartArrayList != null){
+            int itemTotal = 0;
+            for (int i =0; i< Utils.cartArrayList.size(); i++){
+                itemTotal += Utils.cartArrayList.get(i).getSumPrice();
+            }
+            total = itemTotal + feeShip;
+            binding.txtItemTotal.setText(decimalFormat.format(itemTotal)+"đ");
+            binding.txtTotal.setText(decimalFormat.format(total)+"đ");
+            binding.txtDelivery.setText(decimalFormat.format(feeShip)+"đ");
         }
-        total = itemTotal + feeShip;
-        binding.txtItemTotal.setText(decimalFormat.format(itemTotal)+"đ");
-        binding.txtTotal.setText(decimalFormat.format(total)+"đ");
-        binding.txtDelivery.setText(decimalFormat.format(feeShip)+"đ");
     }
     private void initRecylerView() {
         cartAdapter = new CartAdapter(this);
@@ -101,7 +102,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
             String originCart = data.getString(6);
             int numberOrder = data.getInt(7);
             float sumPrice = data.getFloat(8);
-            Utils.cartArrayList.add(new Cart(idCart,nameCart,imageCart,priceCart,descriptionCart,originCart,numberOrder,sumPrice));
+            Utils.cartArrayList.add(new Cart(idCart,imageCart,nameCart,priceCart,descriptionCart,originCart,numberOrder,sumPrice));
         }
     }
 

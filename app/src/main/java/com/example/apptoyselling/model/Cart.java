@@ -2,18 +2,18 @@ package com.example.apptoyselling.model;
 
 public class Cart {
     private int idCart;
-    private String nameCart;
     private String imgCart;
+    private String nameCart;
     private float priceCart;
     private String desCart;
     private String originCart;
     private int numberOrder;
     private float sumPrice;
 
-    public Cart(int idCart, String nameCart, String imgCart, float priceCart, String desCart, String originCart, int numberOrder, float sumPrice) {
+    public Cart(int idCart, String imgCart, String nameCart, float priceCart, String desCart, String originCart, int numberOrder, float sumPrice) {
         this.idCart = idCart;
-        this.nameCart = nameCart;
         this.imgCart = imgCart;
+        this.nameCart = nameCart;
         this.priceCart = priceCart;
         this.desCart = desCart;
         this.originCart = originCart;

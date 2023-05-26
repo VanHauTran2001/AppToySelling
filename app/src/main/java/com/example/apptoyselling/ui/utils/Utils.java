@@ -9,4 +9,6 @@ public class Utils {
     public static final String BASE_URL = "https://ineligible-drive.000webhostapp.com/server/";
     public static SanPhamModel listSPModel;
     public static ArrayList<Cart> cartArrayList = new ArrayList<>();
+    public static String emailUser;
+    public static int idUser;
 }

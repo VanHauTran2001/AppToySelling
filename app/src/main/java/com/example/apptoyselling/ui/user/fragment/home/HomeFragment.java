@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.data.api.APIService;
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment{
     APIService apiService;
     ArrayList<SanPham> sanPhamList;
     MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    PopupMenu popupMenu;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,7 +70,19 @@ public class HomeFragment extends Fragment{
         });
         initRecylerView();
         onClickSearch();
+        onClickFilter();
         return binding.getRoot();
+    }
+
+    private void onClickFilter() {
+        binding.imgPopupFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupMenu = new PopupMenu(getContext(),v, Gravity.RIGHT);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_filter,popupMenu.getMenu());
+                popupMenu.show();
+            }
+        });
     }
 
     private void onClickSearch() {
