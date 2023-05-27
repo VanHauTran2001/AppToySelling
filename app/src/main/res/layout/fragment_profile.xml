@@ -18,36 +18,13 @@
                 <RelativeLayout
                     android:id="@+id/layout_product"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="260dp"
                     android:background="@drawable/top_background_profile">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         android:src="@drawable/circles"/>
-                    <RelativeLayout
-                        android:layout_width="170dp"
-                        android:layout_height="170dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_centerHorizontal="true">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/imgAvatar"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/avatar" />
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/save_image"
-                            android:visibility="gone"
-                            android:id="@+id/imgSave"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginEnd="5dp"/>
-                    </RelativeLayout>
                 </RelativeLayout>
 
                 <LinearLayout
@@ -55,7 +32,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="200dp"
+                    android:layout_marginTop="180dp"
+                    android:paddingTop="20sp"
                     android:background="@drawable/custom_border_profile"
                     android:elevation="5dp"
                     android:orientation="vertical">
@@ -70,8 +48,8 @@
                         android:background="@drawable/custom_layout_category"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/ic_user_name"
                             android:layout_gravity="center"/>
                         <TextView
@@ -102,8 +80,8 @@
                         android:background="@drawable/custom_layout_category"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/baseline_email_24"
                             android:layout_gravity="center"/>
                         <TextView
@@ -133,8 +111,8 @@
                         android:background="@drawable/custom_layout_category"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/baseline_phone_24"
                             android:layout_gravity="center"/>
                         <TextView
@@ -164,8 +142,8 @@
                         android:background="@drawable/custom_layout_category"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/baseline_password_24"
                             android:layout_gravity="center"/>
                         <TextView

@@ -26,6 +26,7 @@ import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.databinding.ActivityCartBinding;
 import com.example.apptoyselling.model.Cart;
 import com.example.apptoyselling.ui.user.activity.home.HomeActivity;
+import com.example.apptoyselling.ui.user.activity.payment.PaymentActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 
 import java.text.DecimalFormat;
@@ -48,6 +49,19 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
         onClickBack();
         checkData();
         customDataTotal();
+        onClickOrder();
+    }
+
+    private void onClickOrder() {
+        binding.btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                intent.putExtra("pay",total);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void onClickBack() {
@@ -92,16 +106,16 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
         if (Utils.cartArrayList != null){
             Utils.cartArrayList.clear();
         }
-        Cursor data = sqLiteHelper.GetData("SELECT * FROM CART");
+        Cursor data = sqLiteHelper.GetData("SELECT * FROM CARTS WHERE IdUser = '"+Utils.idUser+"'");
         while (data.moveToNext()){
             int idCart = data.getInt(1);
-            String imageCart = data.getString(2);
-            String nameCart = data.getString(3);
-            float priceCart = data.getFloat(4);
-            String descriptionCart = data.getString(5);
-            String originCart = data.getString(6);
-            int numberOrder = data.getInt(7);
-            float sumPrice = data.getFloat(8);
+            String imageCart = data.getString(3);
+            String nameCart = data.getString(4);
+            float priceCart = data.getFloat(5);
+            String descriptionCart = data.getString(6);
+            String originCart = data.getString(7);
+            int numberOrder = data.getInt(8);
+            float sumPrice = data.getFloat(9);
             Utils.cartArrayList.add(new Cart(idCart,imageCart,nameCart,priceCart,descriptionCart,originCart,numberOrder,sumPrice));
         }
     }
@@ -160,7 +174,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
         customDataTotal();
     }
     private void updateCart(int id , int newNumber , float newPrice){
-        sqLiteHelper.QueryData("UPDATE CART SET NumberOrder = '"+newNumber+"' , SumPrice = '"+newPrice+"' WHERE IdSP = '"+id+"' ");
+        sqLiteHelper.QueryData("UPDATE CARTS SET NumberOrder = '"+newNumber+"' , SumPrice = '"+newPrice+"' WHERE IdSP = '"+id+"' AND IdUser = '"+Utils.idUser+"' ");
         getDataFromDatabase();
     }
     private void OpenDialog(int id){
@@ -189,7 +203,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
         dialogOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqLiteHelper.QueryData("DELETE FROM CART WHERE IdSP = '"+id+"' ");
+                sqLiteHelper.QueryData("DELETE FROM CARTS WHERE IdSP = '"+id+"' AND IdUser = '"+Utils.idUser+"' ");
                 getDataFromDatabase();
                 customDataTotal();
                 checkData();

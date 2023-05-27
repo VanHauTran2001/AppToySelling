@@ -6,13 +6,10 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.InputType;
-import android.text.method.HideReturnsTransformationMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +19,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.bumptech.glide.Glide;
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.databinding.FragmentProfileBinding;
 import com.example.apptoyselling.model.User;
-import com.example.apptoyselling.ui.user.activity.cart.CartActivity;
 import com.example.apptoyselling.ui.user.activity.signin.SigninActivity;
 import com.example.apptoyselling.ui.utils.Utils;
-
 import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
@@ -49,9 +44,9 @@ public class ProfileFragment extends Fragment {
         onClickLogout();
         onClickChangeInfor();
         onClickVisibilityPassword();
+
         return binding.getRoot();
     }
-
     private void onClickVisibilityPassword() {
         binding.imgShowPass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +64,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
     private void onClickChangeInfor() {
         binding.btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override

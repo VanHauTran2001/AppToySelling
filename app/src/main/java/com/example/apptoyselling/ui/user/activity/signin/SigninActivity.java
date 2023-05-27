@@ -114,8 +114,9 @@ public class SigninActivity extends AppCompatActivity {
                 "Phone VARCHAR(100),"+
                 "Email VARCHAR(100),"+
                 "Password VARCHAR(100))");
-        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS CART(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS CARTS(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "IdSP INTEGER,"+
+                "IdUser INTEGER,"+
                 "Image NVARCHAR(100),"+
                 "NameSP NVARCHAR(100),"+
                 "Price FLOAT,"+
@@ -123,5 +124,13 @@ public class SigninActivity extends AppCompatActivity {
                 "Origin NVARCHAR(100),"+
                 "NumberOrder INTEGER,"+
                 "SumPrice FLOAT)");
+        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS BILL(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "IdDH NVARCHAR(100),"+
+                "NameDH VARCHAR(100),"+
+                "PhoneDH VARCHAR(100),"+
+                "DiaChiDH VARCHAR(100),"+
+                "PriceDH FLOAT,"+
+                "StatusDH VARCHAR(100),"+
+                "DateDH VARCHAR(100))");
     }
 }

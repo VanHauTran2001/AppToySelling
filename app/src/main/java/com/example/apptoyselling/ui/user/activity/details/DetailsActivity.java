@@ -56,7 +56,7 @@ public class DetailsActivity extends AppCompatActivity {
                         if (Utils.cartArrayList.get(i).getIdCart() == idDetails){
                             Utils.cartArrayList.get(i).setNumberOrder((Utils.cartArrayList.get(i).getNumberOrder() + numberOrder));
                             Utils.cartArrayList.get(i).setPriceCart((priceDetails * Utils.cartArrayList.get(i).getNumberOrder()));
-                            sqLiteHelper.QueryData("UPDATE CART SET NumberOrder = '"+Utils.cartArrayList.get(i).getNumberOrder()+"' , SumPrice = '"+ Utils.cartArrayList.get(i).getPriceCart() + "' WHERE IdSP = '"+idDetails+"' ");
+                            sqLiteHelper.QueryData("UPDATE CARTS SET NumberOrder = '"+Utils.cartArrayList.get(i).getNumberOrder()+"' , SumPrice = '"+ Utils.cartArrayList.get(i).getPriceCart() + "' WHERE IdSP = '"+idDetails+"' AND IdUser = '"+Utils.idUser+"' ");
                             exits = true;
                         }
                     }
@@ -71,7 +71,7 @@ public class DetailsActivity extends AppCompatActivity {
                         cart.setNumberOrder(numberOrder);
                         cart.setSumPrice(sumPrice);
                         cart.setPriceCart(priceDetails);
-                        sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
+                        sqLiteHelper.QueryData("INSERT INTO CARTS VALUES(null,'"+ idDetails +"','"+ Utils.idUser +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                     }
                 }else {
                     int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
@@ -85,7 +85,7 @@ public class DetailsActivity extends AppCompatActivity {
                     cart.setNumberOrder(numberOrder);
                     cart.setSumPrice(sumPrice);
                     cart.setPriceCart(priceDetails);
-                    sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
+                    sqLiteHelper.QueryData("INSERT INTO CARTS VALUES(null,'"+ idDetails +"','"+ Utils.idUser +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                 }
                 startActivity(new Intent(DetailsActivity.this, CartActivity.class));
             }
@@ -104,7 +104,7 @@ public class DetailsActivity extends AppCompatActivity {
                             Utils.cartArrayList.get(i).setNumberOrder(Utils.cartArrayList.get(i).getNumberOrder() + numberOrder);
                             Utils.cartArrayList.get(i).setPriceCart(priceDetails * Utils.cartArrayList.get(i).getNumberOrder());
                             exits = true;
-                            sqLiteHelper.QueryData("UPDATE CART SET NumberOrder = '"+Utils.cartArrayList.get(i).getNumberOrder()+"' , SumPrice = '"+ Utils.cartArrayList.get(i).getPriceCart() + "' WHERE IdSP = '"+idDetails+"' ");
+                            sqLiteHelper.QueryData("UPDATE CARTS SET NumberOrder = '"+Utils.cartArrayList.get(i).getNumberOrder()+"' , SumPrice = '"+ Utils.cartArrayList.get(i).getPriceCart() + "' WHERE IdSP = '"+idDetails+"' AND IdUser = '"+Utils.idUser+"' ");
                         }
                     }
                     if (!exits){
@@ -118,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity {
                         cart.setNumberOrder(numberOrder);
                         cart.setSumPrice(sumPrice);
                         cart.setPriceCart(priceDetails);
-                        sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
+                        sqLiteHelper.QueryData("INSERT INTO CARTS VALUES(null,'"+ idDetails +"','"+ Utils.idUser +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                     }
                 }else {
                     int numberOrder = Integer.parseInt(binding.txtNumberOder.getText().toString());
@@ -132,7 +132,7 @@ public class DetailsActivity extends AppCompatActivity {
                     cart.setNumberOrder(numberOrder);
                     cart.setSumPrice(sumPrice);
                     cart.setPriceCart(priceDetails);
-                    sqLiteHelper.QueryData("INSERT INTO CART VALUES(null,'"+ idDetails +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
+                    sqLiteHelper.QueryData("INSERT INTO CARTS VALUES(null,'"+ idDetails +"','"+ Utils.idUser +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                 }
                 Toast.makeText(getApplicationContext(),"Thêm vào giỏ hàng thành công",Toast.LENGTH_SHORT).show();
             }

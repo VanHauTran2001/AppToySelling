@@ -1,5 +1,6 @@
 package com.example.apptoyselling.ui.user.fragment.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,6 +19,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -41,6 +43,7 @@ public class HomeFragment extends Fragment{
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     APIService apiService;
     ArrayList<SanPham> sanPhamList;
+    ArrayList<SanPham> mListUserOld;
     MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     PopupMenu popupMenu;
     @Override
@@ -48,10 +51,12 @@ public class HomeFragment extends Fragment{
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
         apiService = RetrofitClient.getInstance().create(APIService.class);
+        mListUserOld = new ArrayList<>();
         khoitao();
         if (isConnectedInternet(getContext())){
             if (Utils.listSPModel != null){
                 sanPhamList = (ArrayList<SanPham>) Utils.listSPModel.getResult();
+                mListUserOld = sanPhamList;
                 isLoading.setValue(false);
             }else {
                 getSanPham();
@@ -80,11 +85,41 @@ public class HomeFragment extends Fragment{
             public void onClick(View v) {
                 popupMenu = new PopupMenu(getContext(),v, Gravity.RIGHT);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_filter,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.itemTQ:
+                                filter("Trung Quốc");
+                                break;
+                            case R.id.itemDuc:
+                                filter("Đức");
+                                break;
+                            case R.id.itemMy:
+                                filter("Mỹ");
+                                break;
+                            case R.id.itemVN:
+                                filter("Việt Nam");
+                                break;
+                        }
+                        return true;
+                    }
+                });
                 popupMenu.show();
             }
         });
     }
-
+    private void filter(String origin){
+        ArrayList<SanPham> listUser = new ArrayList<>();
+        for (SanPham sanPham : mListUserOld){
+            if (sanPham.getThuongHieu().toLowerCase().contains(origin.toLowerCase())){
+                listUser.add(sanPham);
+            }
+        }
+        sanPhamList = listUser;
+        initRecylerView();
+    }
     private void onClickSearch() {
         binding.edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -119,6 +154,7 @@ public class HomeFragment extends Fragment{
                             if (sanPhamModel.isSuccess()){
                                 sanPhamList = (ArrayList<SanPham>) sanPhamModel.getResult();
                                 Utils.listSPModel = sanPhamModel;
+                                mListUserOld = sanPhamList;
                                 initRecylerView();
                             }
                         },
