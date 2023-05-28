@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -184,7 +185,13 @@ public class DetailsActivity extends AppCompatActivity {
             priceDetails = intent.getFloatExtra("price",0f);
             originDetails = intent.getStringExtra("origin");
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            Glide.with(this).load(imgDetails).into(binding.imgDetails);
+            Log.d("img",imgDetails);
+            if (imgDetails.contains("http")){
+                Glide.with(this).load(imgDetails).into(binding.imgDetails);
+            }else {
+                String hinh = Utils.BASE_URL+imgDetails;
+                Glide.with(this).load(hinh).into(binding.imgDetails);
+            }
             binding.txtNameDetail.setText(nameDetails);
             binding.txtPriceDetail.setText(decimalFormat.format(priceDetails)+"đ");
             binding.txtXuatSu.setText(originDetails);

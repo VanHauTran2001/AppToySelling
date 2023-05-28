@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
         if (userArrayList != null){
             userArrayList.clear();
         }
-        Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS"); //Lấy ra danh sách tài khoản
+        Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS  WHERE Id = '"+Utils.idUser+"'"); //Lấy ra danh sách tài khoản
         while (data.moveToNext()) {
             int id = data.getInt(0);
             String name = data.getString(1);

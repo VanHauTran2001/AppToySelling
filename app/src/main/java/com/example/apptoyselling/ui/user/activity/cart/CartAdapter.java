@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apptoyselling.databinding.ItemCartBinding;
 import com.example.apptoyselling.model.Cart;
+import com.example.apptoyselling.ui.utils.Utils;
 
 import java.text.DecimalFormat;
 
@@ -35,7 +36,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         Cart cart = iCart.getData(position);
         holder.binding.txtNameCart.setText(cart.getNameCart());
-        Glide.with(iCart.getContext()).load(cart.getImgCart()).into(holder.binding.imgCart);
+        if (cart.getImgCart().contains("http")){
+            Glide.with(iCart.getContext()).load(cart.getImgCart()).into(holder.binding.imgCart);
+        }else {
+            String hinh = Utils.BASE_URL+cart.getImgCart();
+            Glide.with(iCart.getContext()).load(hinh).into(holder.binding.imgCart);
+        }
         holder.binding.txtPriceCart.setText(decimalFormat.format(cart.getPriceCart())+"đ");
         holder.binding.txtNumberOderCart.setText(String.valueOf(cart.getNumberOrder()));
         int number = Integer.parseInt(holder.binding.txtNumberOderCart.getText().toString());
