@@ -14,6 +14,7 @@ import com.example.apptoyselling.R;
 import com.example.apptoyselling.databinding.ActivitySigninBinding;
 import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
+import com.example.apptoyselling.ui.admin.home.HomeAdminActivity;
 import com.example.apptoyselling.ui.user.activity.home.HomeActivity;
 import com.example.apptoyselling.ui.user.activity.signup.SignupActivity;
 import com.example.apptoyselling.ui.utils.Utils;
@@ -74,9 +75,15 @@ public class SigninActivity extends AppCompatActivity {
                         onCheckSaveInfo(edtEmail, edtPass);
                         Utils.emailUser = edtEmail;
                         Utils.idUser = id;
+                        Utils.checkDH = false;
                         Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(SigninActivity.this, HomeActivity.class));
-                    } else {
+                    }else if (edtEmail.equals("admin@gmail.com") && edtPass.equals("admin")){
+                        onCheckSaveInfo(edtEmail, edtPass);
+                        Utils.checkDH = true;
+                        Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(SigninActivity.this, HomeAdminActivity.class));
+                    }else {
                         Toast.makeText(SigninActivity.this, "Tài khoản mật khẩu không chính xác !!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -124,7 +131,8 @@ public class SigninActivity extends AppCompatActivity {
                 "Origin NVARCHAR(100),"+
                 "NumberOrder INTEGER,"+
                 "SumPrice FLOAT)");
-        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS BILL(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS BILLS(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "IdUser INTEGER,"+
                 "IdDH NVARCHAR(100),"+
                 "NameDH VARCHAR(100),"+
                 "PhoneDH VARCHAR(100),"+

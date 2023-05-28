@@ -11,4 +11,5 @@ public class Utils {
     public static ArrayList<Cart> cartArrayList = new ArrayList<>();
     public static String emailUser;
     public static int idUser;
+    public static boolean checkDH = false;
 }

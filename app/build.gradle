@@ -51,4 +51,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 }

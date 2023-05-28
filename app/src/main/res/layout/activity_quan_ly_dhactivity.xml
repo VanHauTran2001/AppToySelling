@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.user.fragment.donhang.DonHangFragment"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:background="@color/bgColor">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quản lý đơn hàng"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_below="@id/title"
+            android:layout_above="@id/layoutDoanhThu"
+            android:id="@+id/recylerDonHang"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/layoutDoanhThu"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng doanh thu:"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50,000,000đ"
+                android:gravity="end"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/txtTongDoanhThu"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

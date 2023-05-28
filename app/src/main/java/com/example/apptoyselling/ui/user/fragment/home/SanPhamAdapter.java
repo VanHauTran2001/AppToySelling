@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.apptoyselling.databinding.ItemSanPhamBinding;
 import com.example.apptoyselling.model.SanPham;
 import com.example.apptoyselling.ui.user.activity.details.DetailsActivity;
+import com.example.apptoyselling.ui.utils.Utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -42,7 +43,12 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
     public void onBindViewHolder(@NonNull SanPhamViewHolder holder, int position) {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         SanPham sanPham = sanPhamArrayList.get(position);
-        Glide.with(context).load(sanPham.getHinhAnh()).into(holder.binding.imageSP);
+        if (sanPham.getHinhAnh().contains("http")){
+            Glide.with(context).load(sanPham.getHinhAnh()).into(holder.binding.imageSP);
+        }else {
+            String hinh = Utils.BASE_URL+sanPham.getHinhAnh();
+            Glide.with(context).load(hinh).into(holder.binding.imageSP);
+        }
         holder.binding.txtName.setText(sanPham.getTenSP());
         holder.binding.txtPrice.setText(decimalFormat.format(sanPham.getGiaTien())+"đ");
         holder.itemView.setOnClickListener(new View.OnClickListener() {

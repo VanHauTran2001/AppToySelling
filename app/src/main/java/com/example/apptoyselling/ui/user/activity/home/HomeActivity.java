@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.databinding.ActivityHomeBinding;
 import com.example.apptoyselling.ui.user.activity.cart.CartActivity;
+import com.example.apptoyselling.ui.user.fragment.donhang.DonHangFragment;
 import com.example.apptoyselling.ui.user.fragment.home.HomeFragment;
 import com.example.apptoyselling.ui.user.fragment.profile.ProfileFragment;
 
@@ -33,6 +34,10 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.bottom_cart:
                     startActivity(new Intent(HomeActivity.this, CartActivity.class));
                     binding.bottomNavigation.getMenu().findItem(R.id.bottom_cart).setChecked(true);
+                    break;
+                case R.id.bottom_bill:
+                    getFragment(new DonHangFragment());
+                    binding.bottomNavigation.getMenu().findItem(R.id.bottom_bill).setChecked(true);
                     break;
                 case R.id.bottom_profile:
                     getFragment(new ProfileFragment());

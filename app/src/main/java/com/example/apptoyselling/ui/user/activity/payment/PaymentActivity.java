@@ -38,6 +38,8 @@ public class PaymentActivity extends AppCompatActivity {
     private SQLiteHelper sqLiteHelper;
     private ArrayList<User> userArrayList;
     Dialog dialog;
+    float pricePay;
+    long time = System.currentTimeMillis();
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class PaymentActivity extends AppCompatActivity {
         sqLiteHelper = new SQLiteHelper(this,"toy.db",null,1);
         userArrayList = new ArrayList<>();
         Intent intent = getIntent();
-        float pricePay = intent.getFloatExtra("pay",0f);
+        pricePay = intent.getFloatExtra("pay",0f);
         binding.txtPricePayment.setText(decimalFormat.format(pricePay)+"đ");
         onClickBack();
         getDataUserFromDb();
@@ -127,7 +129,6 @@ public class PaymentActivity extends AppCompatActivity {
         }
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         WindowManager.LayoutParams windowAtributes = window.getAttributes();
         windowAtributes.gravity = Gravity.CENTER;
         window.setAttributes(windowAtributes);
@@ -136,10 +137,25 @@ public class PaymentActivity extends AppCompatActivity {
         dialogOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addDataBilltoDB();
+                DeleteListCart();
                 startActivity(new Intent(PaymentActivity.this, HomeActivity.class));
                 dialog.dismiss();
             }
         });
         dialog.show();
+    }
+    private void addDataBilltoDB(){
+        time++;
+        String idHD = "HD"+time;
+        String nameHD = binding.txtNamePayment.getText().toString().trim();
+        String phoneHD = binding.txtPhonePayment.getText().toString().trim();
+        String addressHD = binding.edtAddressPayment.getText().toString().trim();
+        String status = "Chưa xác nhận";
+        String date = date();
+        sqLiteHelper.QueryData("INSERT INTO BILLS VALUES(null,'"+ Utils.idUser +"','"+ idHD +"','"+ nameHD +"','"+ phoneHD +"','"+ addressHD +"','"+ pricePay +"','"+ status +"','"+ date +"')");
+    }
+    private void DeleteListCart(){
+        sqLiteHelper.QueryData("DELETE FROM CARTS WHERE IdUser = '"+Utils.idUser+"' ");
     }
 }
