@@ -53,7 +53,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ThemSanPhamActivity.this, HomeAdminActivity.class));
+                startActivity(new Intent(ThemSanPhamActivity.this, QuanLySPActivity.class));
             }
         });
     }
@@ -126,7 +126,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                                 }
                             },
                             throwable -> {
-
+                                Toast.makeText(ThemSanPhamActivity.this,throwable.getMessage(),Toast.LENGTH_SHORT).show();
                             }
                     ));
 

@@ -5,14 +5,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.databinding.ActivityQuanLyDhactivityBinding;
 import com.example.apptoyselling.model.DonHang;
+import com.example.apptoyselling.ui.admin.home.HomeAdminActivity;
+import com.example.apptoyselling.ui.admin.qlsanpham.QuanLySPActivity;
+import com.example.apptoyselling.ui.admin.qlsanpham.ThemSanPhamActivity;
 import com.example.apptoyselling.ui.user.fragment.donhang.DonHangAdapter;
 import com.example.apptoyselling.ui.utils.Utils;
 
@@ -38,9 +43,17 @@ public class QuanLyDHActivity extends AppCompatActivity implements DonHangAdapte
             tongTien += donHangArrayList.get(i).getPriceDH();
         }
         binding.txtTongDoanhThu.setText(decimalFormat.format(tongTien)+"đ");
+        onClickBack();
     }
 
-
+    private void onClickBack() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(QuanLyDHActivity.this, HomeAdminActivity.class));
+            }
+        });
+    }
 
     private void initRecylerView() {
         adapter = new DonHangAdapter(donHangArrayList,this);

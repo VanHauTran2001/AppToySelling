@@ -10,6 +10,7 @@ import android.view.View;
 import com.example.apptoyselling.R;
 import com.example.apptoyselling.databinding.ActivityHomeAdminBinding;
 import com.example.apptoyselling.ui.admin.qldonhang.QuanLyDHActivity;
+import com.example.apptoyselling.ui.admin.qlsanpham.QuanLySPActivity;
 import com.example.apptoyselling.ui.admin.qlsanpham.ThemSanPhamActivity;
 import com.example.apptoyselling.ui.user.activity.signin.SigninActivity;
 
@@ -28,7 +29,7 @@ public class HomeAdminActivity extends AppCompatActivity {
         binding.layoutQLSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeAdminActivity.this, ThemSanPhamActivity.class));
+                startActivity(new Intent(HomeAdminActivity.this, QuanLySPActivity.class));
             }
         });
     }

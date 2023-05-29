@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,8 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.user.fragment.donhang.DonHangFragment"
-        android:orientation="vertical">
+        tools:context=".ui.admin.qlsanpham.QuanLySPActivity">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,6 +23,7 @@
                 android:elevation="2dp"
                 android:id="@+id/imgBack"
                 android:background="@drawable/custom_circle_white">
+
                 <ImageView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
@@ -32,49 +33,40 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Quản lý đơn hàng"
+                android:text="Quản lý sản phẩm"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:gravity="center"
+                android:layout_centerVertical="true"
                 android:padding="10dp"
                 android:textStyle="bold"/>
         </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recylerSP"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
             android:layout_below="@id/title"
-            android:layout_above="@id/layoutDoanhThu"
-            android:id="@+id/recylerDonHang"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:id="@+id/layoutDoanhThu"
-            android:layout_marginBottom="10dp"
+            android:visibility="invisible"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/bgColor"
+            android:src="@drawable/baseline_add_24"
+            android:id="@+id/btnAddSanPham"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tổng doanh thu:"
-                android:textStyle="bold"
-                android:fontFamily="serif"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="18sp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="50,000,000đ"
-                android:gravity="end"
-                android:layout_marginEnd="20dp"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/txtTongDoanhThu"
-                android:layout_marginStart="5dp"
-                android:textColor="@color/red"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-        </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:layout_margin="20sp"/>
+
     </RelativeLayout>
 </layout>

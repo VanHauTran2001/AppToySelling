@@ -31,5 +31,23 @@ public interface APIService {
     @Multipart
     @POST("upload.php")
     Call<MessageModel> uploadFile(@Part MultipartBody.Part file);
+
+    @POST("xoa.php")
+    @FormUrlEncoded
+    Observable<SanPhamModel> xoaSanPham(
+            @Field("id") int id
+    );
+
+    @POST("update.php")
+    @FormUrlEncoded
+    Observable<MessageModel> updateSP(
+            @Field("tenSP") String tenSP,
+            @Field("hinhAnh") String hinhAnh,
+            @Field("moTa") String moTa,
+            @Field("giaTien") float giaTien,
+            @Field("thuongHieu") String thuongHieu,
+            @Field("id") int id
+    );
+
 }
 
