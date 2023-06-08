@@ -9,14 +9,16 @@ public class SanPham implements Serializable {
     private String moTa;
     private float giaTien;
     private String thuongHieu;
+    private String type;
 
-    public SanPham(int id, String tenSP, String hinhAnh, String moTa, float giaTien, String thuongHieu) {
+    public SanPham(int id, String tenSP, String hinhAnh, String moTa, float giaTien, String thuongHieu, String type) {
         this.id = id;
         this.tenSP = tenSP;
         this.hinhAnh = hinhAnh;
         this.moTa = moTa;
         this.giaTien = giaTien;
         this.thuongHieu = thuongHieu;
+        this.type = type;
     }
 
     public SanPham() {
@@ -68,5 +70,13 @@ public class SanPham implements Serializable {
 
     public void setThuongHieu(String thuongHieu) {
         this.thuongHieu = thuongHieu;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

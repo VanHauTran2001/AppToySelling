@@ -19,6 +19,7 @@ import com.example.apptoyselling.model.Cart;
 import com.example.apptoyselling.model.SanPham;
 import com.example.apptoyselling.ui.user.activity.cart.CartActivity;
 import com.example.apptoyselling.ui.user.activity.cart.CartAdapter;
+import com.example.apptoyselling.ui.user.activity.home.HomeActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 
 import java.text.DecimalFormat;
@@ -136,6 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
                     sqLiteHelper.QueryData("INSERT INTO CARTS VALUES(null,'"+ idDetails +"','"+ Utils.idUser +"','"+ imgDetails +"','"+ nameDetails +"','"+ priceDetails +"','"+ descriptionDetails +"','"+ originDetails +"','"+ numberOrder +"','"+ sumPrice +"')");
                 }
                 Toast.makeText(getApplicationContext(),"Thêm vào giỏ hàng thành công",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(DetailsActivity.this, HomeActivity.class));
             }
         });
     }
@@ -185,7 +187,6 @@ public class DetailsActivity extends AppCompatActivity {
             priceDetails = intent.getFloatExtra("price",0f);
             originDetails = intent.getStringExtra("origin");
             DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-            Log.d("img",imgDetails);
             if (imgDetails.contains("http")){
                 Glide.with(this).load(imgDetails).into(binding.imgDetails);
             }else {

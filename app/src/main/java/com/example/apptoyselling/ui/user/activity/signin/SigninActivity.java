@@ -3,6 +3,7 @@ package com.example.apptoyselling.ui.user.activity.signin;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.apptoyselling.R;
+import com.example.apptoyselling.data.api.APIService;
+import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.databinding.ActivitySigninBinding;
 import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
@@ -21,17 +24,25 @@ import com.example.apptoyselling.ui.utils.Utils;
 
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class SigninActivity extends AppCompatActivity {
     private ActivitySigninBinding binding;
     SharedPreferences sharedPreferences;
     private SQLiteHelper sqLiteHelper;
     private ArrayList<User> userArrayList;
-    private boolean checkLogin;
-    int id;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    APIService apiService;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_signin);
+        apiService = RetrofitClient.getInstance().create(APIService.class);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading......");
         sqLiteHelper = new SQLiteHelper(this,"toy.db",null,1);
         onCreateDatabase();
         sharedPreferences= getSharedPreferences("dataLogin",MODE_PRIVATE);
@@ -53,38 +64,41 @@ public class SigninActivity extends AppCompatActivity {
                 if (edtEmail.isEmpty() || edtPass.isEmpty()) {
                     Toast.makeText(SigninActivity.this, "Tài khoản mật khẩu không được để trống !!", Toast.LENGTH_SHORT).show();
                 } else {
-                    userArrayList.clear();
-                    Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS"); //Lấy ra danh sách tài khoản
-                    while (data.moveToNext()) {
-                        id = data.getInt(0);
-                        String name = data.getString(1);
-                        String phone = data.getString(2);
-                        String email = data.getString(3);
-                        String password = data.getString(4);
-                        userArrayList.add(new User(id, name, phone, email, password)); //thêm user vào list
-                    }
-                    for (int i = 0; i < userArrayList.size(); i++) {
-                        if (userArrayList.get(i).getEmail().equals(edtEmail) && userArrayList.get(i).getPassWord().equals(edtPass)) {
-                            checkLogin = true;
-                            break;
-                        }else {
-                           checkLogin = false;
-                        }
-                    }
-                    if (checkLogin) {
-                        onCheckSaveInfo(edtEmail, edtPass);
-                        Utils.emailUser = edtEmail;
-                        Utils.idUser = id;
-                        Utils.checkDH = false;
-                        Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SigninActivity.this, HomeActivity.class));
-                    }else if (edtEmail.equals("admin@gmail.com") && edtPass.equals("admin")){
+                    progressDialog.show();
+                      compositeDisposable.add(apiService.dangnhap(edtEmail,edtPass)
+                              .subscribeOn(Schedulers.io())
+                              .observeOn(AndroidSchedulers.mainThread())
+                              .subscribe(
+                                      userModel -> {
+                                          if (userModel.isSuccess()){
+                                              onCheckSaveInfo(edtEmail, edtPass);
+                                              userArrayList = (ArrayList<User>) userModel.getResult();
+                                              for (int i=0;i<userArrayList.size();i++){
+                                                  Utils.idUser = userArrayList.get(i).getId();
+                                                  Utils.nameUser = userArrayList.get(i).getName();
+                                                  Utils.emailUser = userArrayList.get(i).getEmail();
+                                                  Utils.phoneUser = userArrayList.get(i).getPhone();
+                                                  Utils.passWordUser = userArrayList.get(i).getPassWord();
+                                              }
+                                              Utils.checkDH = false;
+                                              Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
+                                              startActivity(new Intent(SigninActivity.this, HomeActivity.class));
+                                              progressDialog.dismiss();
+                                          }else {
+                                              progressDialog.dismiss();
+                                              Toast.makeText(SigninActivity.this,"Tài khoản hoặc mật khẩu không chính xác",Toast.LENGTH_SHORT).show();
+                                          }
+                                      },
+                                      throwable -> {
+                                          Toast.makeText(SigninActivity.this,throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                                      }
+                              ));
+                    if (edtEmail.equals("admin@gmail.com") && edtPass.equals("admin")) {
                         onCheckSaveInfo(edtEmail, edtPass);
                         Utils.checkDH = true;
                         Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                         startActivity(new Intent(SigninActivity.this, HomeAdminActivity.class));
-                    }else {
-                        Toast.makeText(SigninActivity.this, "Tài khoản mật khẩu không chính xác !!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

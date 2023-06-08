@@ -1,6 +1,7 @@
 package com.example.apptoyselling.ui.user.fragment.profile;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -21,25 +22,35 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.apptoyselling.R;
+import com.example.apptoyselling.data.api.APIService;
+import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.databinding.FragmentProfileBinding;
 import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.ui.user.activity.signin.SigninActivity;
+import com.example.apptoyselling.ui.user.activity.signup.SignupActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
-    private SQLiteHelper sqLiteHelper;
-    private ArrayList<User> userArrayList;
     private int passwordNotVisible = 1;
     Dialog dialog;
+    Dialog dialogUpdate;
+    ProgressDialog progressDialog;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    APIService apiService;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_profile,container,false);
-        sqLiteHelper = new SQLiteHelper(getContext(),"toy.db",null,1);
-        userArrayList = new ArrayList<>();
+        apiService = RetrofitClient.getInstance().create(APIService.class);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading......");
         getDataUserFromDb();
         onClickLogout();
         onClickChangeInfor();
@@ -83,26 +94,41 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getDataUserFromDb() {
-        if (userArrayList != null){
-            userArrayList.clear();
+        binding.txtName.setText(Utils.nameUser);
+        binding.txtemail.setText(Utils.emailUser);
+        binding.txtPhone.setText(Utils.phoneUser);
+        binding.txtPassword.setText(Editable.Factory.getInstance().newEditable(Utils.passWordUser));
+    }
+    private void OpenDialogUpdateSuccess(){
+        dialogUpdate = new Dialog(getContext());
+        dialogUpdate.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogUpdate.setContentView(R.layout.dialog_sua_thong_tin);
+        Window window = dialogUpdate.getWindow();
+        if (window==null){
+            return;
         }
-        Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS  WHERE Id = '"+Utils.idUser+"'"); //Lấy ra danh sách tài khoản
-        while (data.moveToNext()) {
-            int id = data.getInt(0);
-            String name = data.getString(1);
-            String phone = data.getString(2);
-            String email = data.getString(3);
-            String password = data.getString(4);
-            userArrayList.add(new User(id, name, phone, email, password)); //thêm user vào list
-        }
-        for (int i=0;i<userArrayList.size();i++){
-            if (userArrayList.get(i).getId() == Utils.idUser){
-                binding.txtName.setText(userArrayList.get(i).getName());
-                binding.txtemail.setText(userArrayList.get(i).getEmail());
-                binding.txtPhone.setText(userArrayList.get(i).getPhone());
-                binding.txtPassword.setText(Editable.Factory.getInstance().newEditable(userArrayList.get(i).getPassWord()));
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAtributes = window.getAttributes();
+        windowAtributes.gravity = Gravity.CENTER;
+        window.setAttributes(windowAtributes);
+        dialogUpdate.setCancelable(true);
+        Button dialogDuyTri= dialogUpdate.findViewById(R.id.btnDuyTri);
+        Button dialogDangXuat = dialogUpdate.findViewById(R.id.btnDialogDangXuat);
+        dialogDuyTri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogUpdate.dismiss();
             }
-        }
+        });
+        dialogDangXuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContext().startActivity(new Intent(getContext(),SigninActivity.class));
+                dialogUpdate.dismiss();
+            }
+        });
+        dialogUpdate.show();
     }
     private void OpenDialog(){
         dialog = new Dialog(getContext());
@@ -142,10 +168,25 @@ public class ProfileFragment extends Fragment {
                 String phone= edtPhone.getText().toString().trim();
                 String email = edtEmail.getText().toString().trim();
                 String pass = edtPass.getText().toString().trim();
-                sqLiteHelper.QueryData("UPDATE USERS SET Name = '"+name+"' , Phone = '"+phone+"', Email = '"+email+"', Password = '"+pass+"' WHERE Id = '"+Utils.idUser+"' ");
-                Toast.makeText(getContext(),"Cập nhật thành công !!!",Toast.LENGTH_LONG).show();
-                getDataUserFromDb();
-
+                progressDialog.show();
+                compositeDisposable.add(apiService.suataikhoan(name,phone,email,pass,Utils.idUser)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                userModel -> {
+                                    if (userModel.isSuccess()){
+                                        progressDialog.dismiss();
+                                        OpenDialogUpdateSuccess();
+                                    }else {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getContext(),userModel.getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+                                },
+                                throwable ->{
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getContext(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                                }
+                        ));
                 dialog.dismiss();
             }
         });

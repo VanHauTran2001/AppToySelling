@@ -56,12 +56,15 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
         binding.btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
-                intent.putExtra("pay",total);
-                startActivity(intent);
+                if(Utils.cartArrayList.size() == 0){
+                    Toast.makeText(CartActivity.this,"Chưa có sản phẩm nào !!!",Toast.LENGTH_LONG).show();
+                }else {
+                    Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                    intent.putExtra("pay",total);
+                    startActivity(intent);
+                }
             }
         });
-
     }
 
     private void onClickBack() {

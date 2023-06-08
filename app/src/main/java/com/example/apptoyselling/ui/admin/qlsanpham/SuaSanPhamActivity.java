@@ -36,7 +36,7 @@ import retrofit2.Response;
 public class SuaSanPhamActivity extends AppCompatActivity {
     private ActivitySuaSanPhamBinding binding;
     int id;
-    String name , img , des , origin;
+    String name , img , des , origin,type;
     float price;
     String mediaPath;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -61,11 +61,12 @@ public class SuaSanPhamActivity extends AppCompatActivity {
                 String giaSP = binding.edtGiaTienSP.getText().toString().trim();
                 String thuongHieu = binding.edtThuongHieuSP.getText().toString().trim();
                 String hinhAnh = binding.hinhAnhSP.getText().toString().trim();
-                if(tenSP.isEmpty() || moTa.isEmpty() || giaSP.isEmpty() || thuongHieu.isEmpty() || hinhAnh.isEmpty()){
+                String type = binding.edtType.getText().toString().trim();
+                if(tenSP.isEmpty() || moTa.isEmpty() || giaSP.isEmpty() || thuongHieu.isEmpty() || hinhAnh.isEmpty() || type.isEmpty()){
                     Toast.makeText(SuaSanPhamActivity.this,"Vui lòng nhập đủ thông tin !",Toast.LENGTH_SHORT).show();
                 }else {
                     float giaTien = Float.parseFloat(giaSP);
-                    compositeDisposable.add(apiService.updateSP(tenSP,hinhAnh,moTa,giaTien,thuongHieu,id)
+                    compositeDisposable.add(apiService.updateSP(tenSP,hinhAnh,moTa,giaTien,thuongHieu,type,id)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
@@ -120,11 +121,13 @@ public class SuaSanPhamActivity extends AppCompatActivity {
         des = intent.getStringExtra("des");
         price = intent.getFloatExtra("price",0f);
         origin = intent.getStringExtra("origin");
+        type = intent.getStringExtra("type");
         binding.edtTenSP.setText(Editable.Factory.getInstance().newEditable(name));
         binding.hinhAnhSP.setText(Editable.Factory.getInstance().newEditable(img));
         binding.edtMoTaSP.setText(Editable.Factory.getInstance().newEditable(des));
         binding.edtGiaTienSP.setText(Editable.Factory.getInstance().newEditable(String.valueOf(price)));
         binding.edtThuongHieuSP.setText(Editable.Factory.getInstance().newEditable(origin));
+        binding.edtType.setText(Editable.Factory.getInstance().newEditable(type));
     }
 
     private void onClickBack() {

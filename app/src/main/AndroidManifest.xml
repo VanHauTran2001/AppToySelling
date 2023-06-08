@@ -19,17 +19,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.admin.qlsanpham.SuaSanPhamActivity"
+            android:name=".ui.user.activity.category.CategoryActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.admin.qlsanpham.SuaSanPhamActivity"
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".ui.admin.qlsanpham.QuanLySPActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".ui.admin.qlsanpham.ThemSanPhamActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".ui.admin.qldonhang.QuanLyDHActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".ui.admin.home.HomeAdminActivity"
             android:exported="false" />

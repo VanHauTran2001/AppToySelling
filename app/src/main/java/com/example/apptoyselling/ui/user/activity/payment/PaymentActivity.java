@@ -36,7 +36,6 @@ public class PaymentActivity extends AppCompatActivity {
     private ActivityPaymentBinding binding;
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
     private SQLiteHelper sqLiteHelper;
-    private ArrayList<User> userArrayList;
     Dialog dialog;
     float pricePay;
     long time = System.currentTimeMillis();
@@ -46,7 +45,6 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_payment);
         sqLiteHelper = new SQLiteHelper(this,"toy.db",null,1);
-        userArrayList = new ArrayList<>();
         Intent intent = getIntent();
         pricePay = intent.getFloatExtra("pay",0f);
         binding.txtPricePayment.setText(decimalFormat.format(pricePay)+"đ");
@@ -86,24 +84,8 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void getDataUserFromDb() {
-        if (userArrayList != null){
-            userArrayList.clear();
-        }
-        Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS"); //Lấy ra danh sách tài khoản
-        while (data.moveToNext()) {
-            int id = data.getInt(0);
-            String name = data.getString(1);
-            String phone = data.getString(2);
-            String email = data.getString(3);
-            String password = data.getString(4);
-            userArrayList.add(new User(id, name, phone, email, password)); //thêm user vào list
-        }
-        for (int i=0;i<userArrayList.size();i++){
-            if (userArrayList.get(i).getId() == Utils.idUser){
-                binding.txtNamePayment.setText(userArrayList.get(i).getName());
-                binding.txtPhonePayment.setText(userArrayList.get(i).getPhone());
-            }
-        }
+        binding.txtNamePayment.setText(Utils.nameUser);
+        binding.txtPhonePayment.setText(Utils.phoneUser);
     }
 
     private void onClickBack() {

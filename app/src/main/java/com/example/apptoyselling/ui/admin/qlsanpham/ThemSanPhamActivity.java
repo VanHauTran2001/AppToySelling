@@ -105,11 +105,12 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         String giaSP = binding.edtGiaTienSP.getText().toString().trim();
         String thuongHieu = binding.edtThuongHieuSP.getText().toString().trim();
         String hinhAnh = binding.hinhAnhSP.getText().toString().trim();
-        if(tenSP.isEmpty() || moTa.isEmpty() || giaSP.isEmpty() || thuongHieu.isEmpty() || hinhAnh.isEmpty()){
+        String type = binding.edtType.getText().toString().trim();
+        if(tenSP.isEmpty() || moTa.isEmpty() || giaSP.isEmpty() || thuongHieu.isEmpty() || hinhAnh.isEmpty()|| type.isEmpty()){
             Toast.makeText(ThemSanPhamActivity.this,"Vui lòng nhập đủ thông tin !",Toast.LENGTH_SHORT).show();
         }else {
             float giaTien = Float.parseFloat(giaSP);
-            compositeDisposable.add(apiService.insertSP(tenSP,hinhAnh,moTa,giaTien,thuongHieu)
+            compositeDisposable.add(apiService.insertSP(tenSP,hinhAnh,moTa,giaTien,thuongHieu,type)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -120,6 +121,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                                     binding.edtGiaTienSP.setText("");
                                     binding.edtThuongHieuSP.setText("");
                                     binding.hinhAnhSP.setText("");
+                                    binding.edtType.setText("");
                                     Toast.makeText(ThemSanPhamActivity.this,messageModel.getMessage(),Toast.LENGTH_SHORT).show();
                                 }else {
                                     Toast.makeText(ThemSanPhamActivity.this,messageModel.getMessage(),Toast.LENGTH_SHORT).show();

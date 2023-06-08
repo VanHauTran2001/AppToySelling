@@ -116,6 +116,17 @@
                 android:inputType="text"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_editext_login"
+                android:hint="Loại sản phẩm"
+                android:id="@+id/edtType"
+                android:textSize="18sp"
+                android:padding="15dp"
+                android:inputType="text"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnThemSP"

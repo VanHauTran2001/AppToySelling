@@ -2,6 +2,7 @@ package com.example.apptoyselling.ui.user.fragment.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,7 +30,9 @@ import com.example.apptoyselling.R;
 import com.example.apptoyselling.data.api.APIService;
 import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.databinding.FragmentHomeBinding;
+import com.example.apptoyselling.model.Banner;
 import com.example.apptoyselling.model.SanPham;
+import com.example.apptoyselling.ui.user.activity.category.CategoryActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 
 import java.util.ArrayList;
@@ -46,6 +50,10 @@ public class HomeFragment extends Fragment{
     ArrayList<SanPham> mListUserOld;
     MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     PopupMenu popupMenu;
+    int current = 0;
+    Runnable runnable;
+    Handler handler;
+    String type = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,10 +81,68 @@ public class HomeFragment extends Fragment{
                 }
             }
         });
+        customViewpager();
         initRecylerView();
         onClickSearch();
         onClickFilter();
+        onClickCategory();
         return binding.getRoot();
+    }
+
+    private void onClickCategory() {
+        binding.layoutBupbe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                type = "bupbe";
+               Intent intent = new Intent(getContext(), CategoryActivity.class);
+               intent.putExtra("type",type);
+               startActivity(intent);
+            }
+        });
+        binding.layoutOto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                type = "oto";
+                Intent intent = new Intent(getContext(), CategoryActivity.class);
+                intent.putExtra("type",type);
+                startActivity(intent);
+            }
+        });
+        binding.layoutRobot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                type = "robot";
+                Intent intent = new Intent(getContext(), CategoryActivity.class);
+                intent.putExtra("type",type);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void customViewpager() {
+        ArrayList<Banner> bannerArrayList = new ArrayList<>();
+        bannerArrayList.add(new Banner(R.drawable.banner1));
+        bannerArrayList.add(new Banner(R.drawable.banner2));
+        bannerArrayList.add(new Banner(R.drawable.banner3));
+        bannerArrayList.add(new Banner(R.drawable.banner4));
+        bannerArrayList.add(new Banner(R.drawable.banner5));
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(bannerArrayList);
+        binding.viewPager.setAdapter(viewPagerAdapter);
+        binding.circleIndicator.setViewPager(binding.viewPager);
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                current = binding.viewPager.getCurrentItem();
+                current++;
+                if (current >= binding.viewPager.getAdapter().getCount()){
+                    current = 0;
+                }
+                binding.viewPager.setCurrentItem(current,true);
+                handler.postDelayed(runnable,3000);
+            }
+        };
+        handler.postDelayed(runnable,3000);
     }
 
     private void onClickFilter() {

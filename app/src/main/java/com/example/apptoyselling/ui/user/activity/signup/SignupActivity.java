@@ -3,6 +3,7 @@ package com.example.apptoyselling.ui.user.activity.signup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.apptoyselling.R;
+import com.example.apptoyselling.data.api.APIService;
+import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.databinding.ActivitySignupBinding;
 import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
@@ -17,16 +20,22 @@ import com.example.apptoyselling.ui.user.activity.signin.SigninActivity;
 
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
-    private SQLiteHelper sqLiteHelper;
-    private ArrayList<User> userArrayList;
-    private boolean check;
+    ProgressDialog progressDialog;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    APIService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_signup);
-        userArrayList = new ArrayList<>();
+        apiService = RetrofitClient.getInstance().create(APIService.class);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading......");
         binding.btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,32 +52,26 @@ public class SignupActivity extends AppCompatActivity {
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()){
                     Toast.makeText(SignupActivity.this,"Dữ liệu không được để trống !",Toast.LENGTH_SHORT).show();
                 }else {
-                    sqLiteHelper = new SQLiteHelper(getApplicationContext(),"toy.db",null,1);
-                    userArrayList.clear();
-                    Cursor data = sqLiteHelper.GetData("SELECT * FROM USERS"); //lấy ra danh sách tài khoản
-                    while (data.moveToNext()){
-                        int id = data.getInt(0);
-                        String nameLogin = data.getString(1);
-                        String phoneLogin = data.getString(2);
-                        String emailLogin = data.getString(3);
-                        String passwordLogin = data.getString(4);
-                        userArrayList.add(new User(id,nameLogin,phoneLogin,emailLogin,passwordLogin));
-                        for (int i=0;i<userArrayList.size();i++){
-                            if (userArrayList.get(i).getEmail().equals(email)){ //kiểm tra điều kiện nếu tài khoản trùng
-                                check = true;
-                            }else {
-                                check = false;
-                            }
-                        }
-                    }
-                    if (!check){
-                        sqLiteHelper.QueryData("INSERT INTO USERS VALUES(null,'" + name + "','" + phone + "','" + email + "','"+password+"')"); //thêm tài khoản vào database
-                        Toast.makeText(SignupActivity.this,"Đăng ký thành công",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignupActivity.this, SigninActivity.class));
-                    }else {
-                        Toast.makeText(SignupActivity.this,"Tài khoản đã tồn tại !",Toast.LENGTH_SHORT).show();
-                    }
-
+                      progressDialog.show();
+                      compositeDisposable.add(apiService.dangky(name,phone,email,password)
+                              .subscribeOn(Schedulers.io())
+                              .observeOn(AndroidSchedulers.mainThread())
+                              .subscribe(
+                                    userModel -> {
+                                        if (userModel.isSuccess()){
+                                            progressDialog.dismiss();
+                                            startActivity(new Intent(SignupActivity.this, SigninActivity.class));
+                                            Toast.makeText(SignupActivity.this,userModel.getMessage(),Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(SignupActivity.this,userModel.getMessage(),Toast.LENGTH_SHORT).show();
+                                        }
+                                    },
+                                      throwable ->{
+                                          progressDialog.dismiss();
+                                          Toast.makeText(SignupActivity.this,throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                                      }
+                              ));
                 }
             }
         });

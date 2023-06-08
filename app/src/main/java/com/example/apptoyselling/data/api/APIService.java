@@ -3,6 +3,7 @@ import io.reactivex.Observable;
 
 import com.example.apptoyselling.model.MessageModel;
 import com.example.apptoyselling.model.SanPhamModel;
+import com.example.apptoyselling.model.UserModel;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -25,7 +26,8 @@ public interface APIService {
             @Field("hinhAnh") String hinhAnh,
             @Field("moTa") String moTa,
             @Field("giaTien") float giaTien,
-            @Field("thuongHieu") String thuongHieu
+            @Field("thuongHieu") String thuongHieu,
+            @Field("type") String type
     );
 
     @Multipart
@@ -46,6 +48,33 @@ public interface APIService {
             @Field("moTa") String moTa,
             @Field("giaTien") float giaTien,
             @Field("thuongHieu") String thuongHieu,
+            @Field("type") String type,
+            @Field("id") int id
+    );
+
+    @POST("dangky.php")
+    @FormUrlEncoded
+    Observable<UserModel> dangky(
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("email") String email,
+            @Field("passWord") String passWord
+    );
+
+    @POST("dangnhap.php")
+    @FormUrlEncoded
+    Observable<UserModel> dangnhap(
+            @Field("email") String email,
+            @Field("passWord") String passWord
+    );
+
+    @POST("suataikhoan.php")
+    @FormUrlEncoded
+    Observable<UserModel> suataikhoan(
+            @Field("name") String name,
+            @Field("phone") String phone,
+            @Field("email") String email,
+            @Field("passWord") String passWord,
             @Field("id") int id
     );
 

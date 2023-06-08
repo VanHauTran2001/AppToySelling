@@ -49,12 +49,6 @@ public class QuanLySPActivity extends AppCompatActivity implements DanhSachSPAda
         apiService = RetrofitClient.getInstance().create(APIService.class);
         sanPhamList = new ArrayList<>();
         if (isConnectedInternet(getContext())){
-//            if (Utils.listSPModel != null){
-//                sanPhamList = (ArrayList<SanPham>) Utils.listSPModel.getResult();
-//                isLoading.setValue(false);
-//            }else {
-//
-//            }
             getSanPham();
         }
 
@@ -147,6 +141,7 @@ public class QuanLySPActivity extends AppCompatActivity implements DanhSachSPAda
         intent.putExtra("des",sanPham.getMoTa());
         intent.putExtra("price",sanPham.getGiaTien());
         intent.putExtra("origin",sanPham.getThuongHieu());
+        intent.putExtra("type",sanPham.getType());
         startActivity(intent);
     }
     private void OpenDialog(int id){
