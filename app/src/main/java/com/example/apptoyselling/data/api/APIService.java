@@ -1,6 +1,7 @@
 package com.example.apptoyselling.data.api;
 import io.reactivex.Observable;
 
+import com.example.apptoyselling.model.DonHangModel;
 import com.example.apptoyselling.model.MessageModel;
 import com.example.apptoyselling.model.SanPhamModel;
 import com.example.apptoyselling.model.UserModel;
@@ -78,5 +79,32 @@ public interface APIService {
             @Field("id") int id
     );
 
+    @POST("donhang.php")
+    @FormUrlEncoded
+    Observable<DonHangModel> postDonHang(
+            @Field("idDH") String idDH,
+            @Field("nameDH") String nameDH,
+            @Field("phoneDH") String phoneDH,
+            @Field("diachiDH") String diachiDH,
+            @Field("priceDH") float priceDH,
+            @Field("statusDH") String statusDH,
+            @Field("date") String date,
+            @Field("id") int id
+    );
+
+    @POST("getdonhanguser.php")
+    @FormUrlEncoded
+    Observable<DonHangModel> getDonHangUser(
+            @Field("id") int id
+    );
+    @GET("getdonhangadmin.php")
+    Observable<DonHangModel> getDonHangAdmin();
+
+    @POST("updatedonhang.php")
+    @FormUrlEncoded
+    Observable<DonHangModel> updateDonHang(
+            @Field("idDH") String idDH,
+            @Field("statusDH") String statusDH
+    );
 }
 

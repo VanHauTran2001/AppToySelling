@@ -39,18 +39,29 @@
                 android:padding="10dp"
                 android:textStyle="bold"/>
         </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recylerDonHang"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_below="@id/title"
             android:layout_above="@id/layoutDoanhThu"
-            android:id="@+id/recylerDonHang"/>
+            android:layout_below="@id/title"
+            android:layout_marginStart="10dp"
+            android:visibility="invisible"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:id="@+id/layoutDoanhThu"
+            android:visibility="invisible"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal">

@@ -54,6 +54,7 @@ public class DonHangAdapter extends RecyclerView.Adapter<DonHangAdapter.DonHangV
         if (donHang.getStatusDH().equals("Chưa xác nhận")){
             holder.binding.txtTrangThaiDH.setTextColor(Color.parseColor("#F42A2A"));
         }else {
+            holder.binding.btnXacNhan.setEnabled(false);
             holder.binding.txtTrangThaiDH.setTextColor(Color.parseColor("#1E97BD"));
         }
         holder.binding.btnXacNhan.setOnClickListener(new View.OnClickListener() {

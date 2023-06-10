@@ -25,6 +25,7 @@ import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.databinding.ActivityQuanLySpactivityBinding;
 import com.example.apptoyselling.model.SanPham;
 import com.example.apptoyselling.ui.admin.home.HomeAdminActivity;
+import com.example.apptoyselling.ui.admin.qldonhang.QuanLyDHActivity;
 import com.example.apptoyselling.ui.user.activity.details.DetailsActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 
@@ -203,5 +204,11 @@ public class QuanLySPActivity extends AppCompatActivity implements DanhSachSPAda
     public void onDestroy() {
         compositeDisposable.clear();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(QuanLySPActivity.this, HomeAdminActivity.class));
+        super.onBackPressed();
     }
 }

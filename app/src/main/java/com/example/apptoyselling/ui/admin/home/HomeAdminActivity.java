@@ -51,4 +51,10 @@ public class HomeAdminActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(HomeAdminActivity.this, SigninActivity.class));
+        super.onBackPressed();
+    }
 }

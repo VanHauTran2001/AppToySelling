@@ -63,7 +63,12 @@ public class SigninActivity extends AppCompatActivity {
                 String edtPass = binding.edtPassword.getText().toString().trim();
                 if (edtEmail.isEmpty() || edtPass.isEmpty()) {
                     Toast.makeText(SigninActivity.this, "Tài khoản mật khẩu không được để trống !!", Toast.LENGTH_SHORT).show();
-                } else {
+                }else if (edtEmail.equals("admin@gmail.com") && edtPass.equals("admin")){
+                    onCheckSaveInfo(edtEmail, edtPass);
+                    Utils.checkDH = true;
+                    Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SigninActivity.this, HomeAdminActivity.class));
+                }else {
                     progressDialog.show();
                       compositeDisposable.add(apiService.dangnhap(edtEmail,edtPass)
                               .subscribeOn(Schedulers.io())
@@ -93,13 +98,6 @@ public class SigninActivity extends AppCompatActivity {
                                           Toast.makeText(SigninActivity.this,throwable.getMessage(),Toast.LENGTH_SHORT).show();
                                       }
                               ));
-                    if (edtEmail.equals("admin@gmail.com") && edtPass.equals("admin")) {
-                        onCheckSaveInfo(edtEmail, edtPass);
-                        Utils.checkDH = true;
-                        Toast.makeText(SigninActivity.this, "Đăng nhập thành công !!", Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                        startActivity(new Intent(SigninActivity.this, HomeAdminActivity.class));
-                    }
                 }
             }
         });
@@ -130,11 +128,6 @@ public class SigninActivity extends AppCompatActivity {
         });
     }
     private void onCreateDatabase() {
-        sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS USERS(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "Name VARCHAR(100),"+
-                "Phone VARCHAR(100),"+
-                "Email VARCHAR(100),"+
-                "Password VARCHAR(100))");
         sqLiteHelper.QueryData("CREATE TABLE IF NOT EXISTS CARTS(Id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "IdSP INTEGER,"+
                 "IdUser INTEGER,"+

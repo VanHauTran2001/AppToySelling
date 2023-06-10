@@ -1,38 +1,53 @@
 package com.example.apptoyselling.ui.user.fragment.donhang;
 
-import android.database.Cursor;
 import android.os.Bundle;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import com.example.apptoyselling.R;
-import com.example.apptoyselling.data.sqlite.SQLiteHelper;
+import com.example.apptoyselling.data.api.APIService;
+import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.databinding.FragmentDonHangBinding;
 import com.example.apptoyselling.model.DonHang;
-import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.ui.utils.Utils;
 
 import java.util.ArrayList;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class DonHangFragment extends Fragment implements DonHangAdapter.IDonHang{
     private FragmentDonHangBinding binding;
-    private SQLiteHelper sqLiteHelper;
     private ArrayList<DonHang> donHangArrayList;
     private DonHangAdapter adapter;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    APIService apiService;
+    MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_don_hang,container,false);
-        sqLiteHelper = new SQLiteHelper(getContext(),"toy.db",null,1);
+        apiService = RetrofitClient.getInstance().create(APIService.class);
         donHangArrayList = new ArrayList<>();
         getDataUserFromDb();
+        isLoading.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                }else {
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.recylerDonHang.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         initRecylerView();
         return binding.getRoot();
     }
@@ -44,20 +59,24 @@ public class DonHangFragment extends Fragment implements DonHangAdapter.IDonHang
     }
 
     private void getDataUserFromDb() {
-        if (donHangArrayList != null){
-            donHangArrayList.clear();
-        }
-        Cursor data = sqLiteHelper.GetData("SELECT * FROM BILLS WHERE IdUser = '" + Utils.idUser+"' ORDER BY Id DESC");
-        while (data.moveToNext()) {
-            String idDH = data.getString(2);
-            String nameDH = data.getString(3);
-            String phoneDH = data.getString(4);
-            String diaChiDH = data.getString(5);
-            float priceDH = data.getFloat(6);
-            String statusDH = data.getString(7);
-            String date = data.getString(8);
-            donHangArrayList.add(new DonHang(idDH,nameDH,phoneDH,diaChiDH,priceDH,statusDH,date));
-        }
+        isLoading.setValue(true);
+        compositeDisposable.add(apiService.getDonHangUser(Utils.idUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        donHangModel -> {
+                            isLoading.setValue(false);
+                            if (donHangModel.isSuccess()){
+                                donHangArrayList = (ArrayList<DonHang>) donHangModel.getResult();
+                                initRecylerView();
+                            }else {
+                                Toast.makeText(getContext(),donHangModel.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getContext(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
     @Override

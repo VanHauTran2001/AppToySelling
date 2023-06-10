@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -19,11 +20,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.apptoyselling.R;
+import com.example.apptoyselling.data.api.APIService;
+import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.data.sqlite.SQLiteHelper;
 import com.example.apptoyselling.databinding.ActivityPaymentBinding;
 import com.example.apptoyselling.model.User;
 import com.example.apptoyselling.ui.user.activity.cart.CartActivity;
 import com.example.apptoyselling.ui.user.activity.home.HomeActivity;
+import com.example.apptoyselling.ui.user.activity.signin.SigninActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 
 import java.text.DateFormat;
@@ -32,6 +36,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class PaymentActivity extends AppCompatActivity {
     private ActivityPaymentBinding binding;
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -39,11 +47,17 @@ public class PaymentActivity extends AppCompatActivity {
     Dialog dialog;
     float pricePay;
     long time = System.currentTimeMillis();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    APIService apiService;
+    ProgressDialog progressDialog;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_payment);
+        apiService = RetrofitClient.getInstance().create(APIService.class);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading......");
         sqLiteHelper = new SQLiteHelper(this,"toy.db",null,1);
         Intent intent = getIntent();
         pricePay = intent.getFloatExtra("pay",0f);
@@ -62,7 +76,7 @@ public class PaymentActivity extends AppCompatActivity {
                 if (edtDiaChi.isEmpty()){
                     Toast.makeText(PaymentActivity.this,"Địa chỉ nhận hàng không được để trống !",Toast.LENGTH_SHORT).show();
                 }else {
-                    OpenDialog();
+                    addDataBilltoDB();
                 }
             }
         });
@@ -119,7 +133,6 @@ public class PaymentActivity extends AppCompatActivity {
         dialogOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addDataBilltoDB();
                 DeleteListCart();
                 startActivity(new Intent(PaymentActivity.this, HomeActivity.class));
                 dialog.dismiss();
@@ -135,7 +148,23 @@ public class PaymentActivity extends AppCompatActivity {
         String addressHD = binding.edtAddressPayment.getText().toString().trim();
         String status = "Chưa xác nhận";
         String date = date();
-        sqLiteHelper.QueryData("INSERT INTO BILLS VALUES(null,'"+ Utils.idUser +"','"+ idHD +"','"+ nameHD +"','"+ phoneHD +"','"+ addressHD +"','"+ pricePay +"','"+ status +"','"+ date +"')");
+        progressDialog.show();
+        compositeDisposable.add(apiService.postDonHang(idHD,nameHD,phoneHD,addressHD,pricePay,status,date,Utils.idUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        donHangModel -> {
+                            if (donHangModel.isSuccess()){
+                                OpenDialog();
+                                progressDialog.dismiss();
+                            }else {
+                                Toast.makeText(PaymentActivity.this,donHangModel.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(PaymentActivity.this,throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
     private void DeleteListCart(){
         sqLiteHelper.QueryData("DELETE FROM CARTS WHERE IdUser = '"+Utils.idUser+"' ");

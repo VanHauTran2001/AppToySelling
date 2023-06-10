@@ -171,4 +171,10 @@ public class SuaSanPhamActivity extends AppCompatActivity {
         mediaPath = data.getDataString();
         uploadMultipleFiles();
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(SuaSanPhamActivity.this,QuanLySPActivity.class));
+        super.onBackPressed();
+    }
 }

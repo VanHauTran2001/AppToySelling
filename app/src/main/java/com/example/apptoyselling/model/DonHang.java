@@ -8,8 +8,9 @@ public class DonHang {
     private float priceDH;
     private String statusDH;
     private String date;
+    private int id;
 
-    public DonHang(String idDH, String nameDH, String phoneDH, String diachiDH, float priceDH, String statusDH, String date) {
+    public DonHang(String idDH, String nameDH, String phoneDH, String diachiDH, float priceDH, String statusDH, String date,int id) {
         this.idDH = idDH;
         this.nameDH = nameDH;
         this.phoneDH = phoneDH;
@@ -17,6 +18,7 @@ public class DonHang {
         this.priceDH = priceDH;
         this.statusDH = statusDH;
         this.date = date;
+        this.id = id;
     }
 
     public DonHang() {
@@ -76,5 +78,13 @@ public class DonHang {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -23,20 +23,16 @@
             android:exported="false" />
         <activity
             android:name=".ui.admin.qlsanpham.SuaSanPhamActivity"
-            android:exported="false"
-            android:noHistory="true" />
+            android:exported="false" />
         <activity
             android:name=".ui.admin.qlsanpham.QuanLySPActivity"
-            android:exported="false"
-            android:noHistory="true" />
+            android:exported="false" />
         <activity
             android:name=".ui.admin.qlsanpham.ThemSanPhamActivity"
-            android:exported="false"
-            android:noHistory="true" />
+            android:exported="false"/>
         <activity
             android:name=".ui.admin.qldonhang.QuanLyDHActivity"
-            android:exported="false"
-            android:noHistory="true" />
+            android:exported="false" />
         <activity
             android:name=".ui.admin.home.HomeAdminActivity"
             android:exported="false" />

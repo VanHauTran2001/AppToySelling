@@ -167,4 +167,9 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         compositeDisposable.clear();
         super.onDestroy();
     }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ThemSanPhamActivity.this,QuanLySPActivity.class));
+        super.onBackPressed();
+    }
 }
