@@ -216,4 +216,10 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ICart
         });
         dialogDelete.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(CartActivity.this,HomeActivity.class));
+        super.onBackPressed();
+    }
 }
