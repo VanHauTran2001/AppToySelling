@@ -68,7 +68,9 @@ public class QuanLyDHActivity extends AppCompatActivity implements DonHangAdapte
     private void tongDoanhThu(){
         float tongTien = 0;
         for (int i=0;i<donHangArrayList.size();i++){
-            tongTien += donHangArrayList.get(i).getPriceDH();
+            if (donHangArrayList.get(i).getStatusDH().equals("Đã xác nhận")){
+                tongTien += donHangArrayList.get(i).getPriceDH();
+            }
         }
         binding.txtTongDoanhThu.setText(decimalFormat.format(tongTien)+"đ");
     }
