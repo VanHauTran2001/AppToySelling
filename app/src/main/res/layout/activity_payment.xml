@@ -161,7 +161,6 @@
                     android:buttonTint="@color/bgColor"
                     android:layout_marginBottom="5dp"
                     android:textSize="16sp"
-                    android:checked="true"
                     android:id="@+id/radioMoney"
                     android:textColor="@color/bgColor"/>
                 <RadioButton

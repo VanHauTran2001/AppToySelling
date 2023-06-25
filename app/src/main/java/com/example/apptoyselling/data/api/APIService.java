@@ -89,7 +89,8 @@ public interface APIService {
             @Field("priceDH") float priceDH,
             @Field("statusDH") String statusDH,
             @Field("date") String date,
-            @Field("id") int id
+            @Field("id") int id,
+            @Field("payment") String payment
     );
 
     @POST("getdonhanguser.php")

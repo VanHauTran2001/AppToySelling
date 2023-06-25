@@ -135,6 +135,26 @@ public class QuanLyDHActivity extends AppCompatActivity implements DonHangAdapte
     }
 
     @Override
+    public void onClickHuyDH(String idDH) {
+        String status = "Đã hủy";
+        compositeDisposable.add(apiService.updateDonHang(idDH,status)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        donHangModel -> {
+                            if (donHangModel.isSuccess()){
+                                getDataUserFromDb();
+                            }else {
+                                Toast.makeText(QuanLyDHActivity.this,donHangModel.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(QuanLyDHActivity.this,throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                ));
+    }
+
+    @Override
     public void onBackPressed() {
         startActivity(new Intent(QuanLyDHActivity.this,HomeAdminActivity.class));
         super.onBackPressed();

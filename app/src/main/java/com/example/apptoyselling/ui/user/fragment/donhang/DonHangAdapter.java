@@ -26,6 +26,7 @@ public class DonHangAdapter extends RecyclerView.Adapter<DonHangAdapter.DonHangV
 
     public interface IDonHang{
         void onClickXacNhanDH(String idDH);
+        void onClickHuyDH(String idDH);
     }
     @NonNull
     @Override
@@ -46,21 +47,28 @@ public class DonHangAdapter extends RecyclerView.Adapter<DonHangAdapter.DonHangV
         holder.binding.txtTongTienDH.setText(decimalFormat.format(donHang.getPriceDH())+"đ");
         holder.binding.txtTrangThaiDH.setText(donHang.getStatusDH());
         holder.binding.txtDate.setText(donHang.getDate());
+        holder.binding.txtPayment.setText(donHang.getPayment());
         if (Utils.checkDH){
             holder.binding.btnXacNhan.setVisibility(View.VISIBLE);
         }else {
             holder.binding.btnXacNhan.setVisibility(View.GONE);
         }
-        if (donHang.getStatusDH().equals("Chưa xác nhận")){
-            holder.binding.txtTrangThaiDH.setTextColor(Color.parseColor("#F42A2A"));
-        }else {
+        if (donHang.getStatusDH().equals("Đã xác nhận")){
             holder.binding.btnXacNhan.setEnabled(false);
             holder.binding.txtTrangThaiDH.setTextColor(Color.parseColor("#1E97BD"));
+        }else {
+            holder.binding.txtTrangThaiDH.setTextColor(Color.parseColor("#F42A2A"));
         }
         holder.binding.btnXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iDonHang.onClickXacNhanDH(donHang.getIdDH());
+            }
+        });
+        holder.binding.btnHuyDH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iDonHang.onClickHuyDH(donHang.getIdDH());
             }
         });
     }

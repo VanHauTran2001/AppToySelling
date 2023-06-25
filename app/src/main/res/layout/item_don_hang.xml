@@ -125,6 +125,31 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Hình thức thanh toán:"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/txtPayment"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Tổng tiền:"
                 android:textStyle="bold"
                 android:fontFamily="serif"
@@ -168,20 +193,37 @@
                 android:textColor="@color/red"
                 android:textSize="18sp"/>
         </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/custom_button_teal_corner_5"
-        android:text="Xác nhận"
-        android:visibility="gone"
-        android:id="@+id/btnXacNhan"
-        android:layout_gravity="center_horizontal"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="18sp">
-
-    </Button>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_button_teal_corner_5"
+                android:text="Xác nhận"
+                android:id="@+id/btnXacNhan"
+                android:layout_gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:layout_marginEnd="5dp"
+                android:textSize="18sp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/custom_btn_red_conner_5"
+                android:text="Hủy"
+                android:id="@+id/btnHuyDH"
+                android:layout_gravity="center_horizontal"
+                android:textAllCaps="false"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

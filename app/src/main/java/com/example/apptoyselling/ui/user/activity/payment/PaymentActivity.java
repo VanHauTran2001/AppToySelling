@@ -50,6 +50,7 @@ public class PaymentActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     APIService apiService;
     ProgressDialog progressDialog;
+    String payment;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,9 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         pricePay = intent.getFloatExtra("pay",0f);
         binding.txtPricePayment.setText(decimalFormat.format(pricePay)+"đ");
+        onCLickRadioButton();
         onClickBack();
         getDataUserFromDb();
-        onCLickRadioButton();
         onClickPayment();
     }
 
@@ -75,6 +76,8 @@ public class PaymentActivity extends AppCompatActivity {
                 String edtDiaChi = binding.edtAddressPayment.getText().toString().trim();
                 if (edtDiaChi.isEmpty()){
                     Toast.makeText(PaymentActivity.this,"Địa chỉ nhận hàng không được để trống !",Toast.LENGTH_SHORT).show();
+                }else if (!binding.radioMoney.isChecked() && !binding.radioCard.isChecked()){
+                    Toast.makeText(PaymentActivity.this,"Vui lòng chọn phương thức thanh toán !",Toast.LENGTH_SHORT).show();
                 }else {
                     addDataBilltoDB();
                 }
@@ -141,15 +144,22 @@ public class PaymentActivity extends AppCompatActivity {
         dialog.show();
     }
     private void addDataBilltoDB(){
+        payment = "";
         time++;
         String idHD = "HD"+time;
         String nameHD = binding.txtNamePayment.getText().toString().trim();
         String phoneHD = binding.txtPhonePayment.getText().toString().trim();
         String addressHD = binding.edtAddressPayment.getText().toString().trim();
         String status = "Chưa xác nhận";
+        if (binding.radioCard.isChecked()){
+            payment = "Thẻ ngân hàng";
+        }
+        if (binding.radioMoney.isChecked()){
+            payment = "Tiền mặt";
+        }
         String date = date();
         progressDialog.show();
-        compositeDisposable.add(apiService.postDonHang(idHD,nameHD,phoneHD,addressHD,pricePay,status,date,Utils.idUser)
+        compositeDisposable.add(apiService.postDonHang(idHD,nameHD,phoneHD,addressHD,pricePay,status,date,Utils.idUser,payment)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

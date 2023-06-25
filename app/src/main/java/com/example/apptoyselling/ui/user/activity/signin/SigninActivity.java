@@ -148,4 +148,9 @@ public class SigninActivity extends AppCompatActivity {
                 "StatusDH VARCHAR(100),"+
                 "DateDH VARCHAR(100))");
     }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+    }
 }

@@ -15,6 +15,7 @@ import com.example.apptoyselling.data.api.APIService;
 import com.example.apptoyselling.data.api.RetrofitClient;
 import com.example.apptoyselling.databinding.FragmentDonHangBinding;
 import com.example.apptoyselling.model.DonHang;
+import com.example.apptoyselling.ui.admin.qldonhang.QuanLyDHActivity;
 import com.example.apptoyselling.ui.utils.Utils;
 
 import java.util.ArrayList;
@@ -82,5 +83,25 @@ public class DonHangFragment extends Fragment implements DonHangAdapter.IDonHang
     @Override
     public void onClickXacNhanDH(String idDH) {
 
+    }
+
+    @Override
+    public void onClickHuyDH(String idDH) {
+        String status = "Đã hủy";
+        compositeDisposable.add(apiService.updateDonHang(idDH,status)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        donHangModel -> {
+                            if (donHangModel.isSuccess()){
+                                getDataUserFromDb();
+                            }else {
+                                Toast.makeText(getContext(),donHangModel.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Toast.makeText(getContext(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 }
